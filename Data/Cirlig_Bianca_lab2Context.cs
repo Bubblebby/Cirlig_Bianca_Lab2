@@ -17,5 +17,6 @@ namespace Cirlig_Bianca_lab2.Data
         public DbSet<Cirlig_Bianca_lab2.Models.Book> Book { get; set; } = default!;
         public DbSet<Cirlig_Bianca_lab2.Models.Publisher> Publisher { get; set; } = default!;
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Cirlig_Bianca_lab2.Models.Category> Category { get; set; } = default!;
     }
 }

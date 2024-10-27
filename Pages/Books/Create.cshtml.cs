@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cirlig_Bianca_lab2.Pages.Books
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BookCategoriesPageModel
     {
         private readonly Cirlig_Bianca_lab2.Data.Cirlig_Bianca_lab2Context _context;
 
@@ -22,7 +22,16 @@ namespace Cirlig_Bianca_lab2.Pages.Books
 
         public IActionResult OnGet()
         {
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+            var authorList = _context.Author.Select(x => new
+            {
+                x.ID,
+                FullName = x.LastName + " " + x.FirstName
+            });
+
+            var book = new Book();
+            book.BookCategories = new List<BookCategory>();
+            PopulateAssignedCategoryData(_context, book);
+
             return Page();
         }
 
@@ -31,21 +40,24 @@ namespace Cirlig_Bianca_lab2.Pages.Books
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public List<SelectListItem> Authors { get; set; } = new List<SelectListItem>();
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-            if (!ModelState.IsValid)
+            var newBook = new Book();
+            if (selectedCategories != null)
             {
-                Authors = await _context.Authors.Select(a => new SelectListItem
+                newBook.BookCategories = new List<BookCategory>();
+                foreach (var cat in selectedCategories)
                 {
-                    Value = a.ID.ToString(),
-                    Text = a.FirstName + " " + a.LastName
-                }).ToListAsync();
-                return Page();
+                    var catToAdd = new BookCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newBook.BookCategories.Add(catToAdd);
+                }
             }
-
+            Book.BookCategories = newBook.BookCategories;
             _context.Book.Add(Book);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
         }
     }
