@@ -8,7 +8,7 @@ namespace Cirlig_Bianca_Lab2.Models
     {
         public int ID { get; set; }
         [Display(Name = "Book Title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [Column(TypeName = "decimal(6, 2)")]
         public decimal Price { get; set; }
         [DataType(DataType.Date)]

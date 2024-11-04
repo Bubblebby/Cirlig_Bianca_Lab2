@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Cirlig_Bianca_Lab2.Data;
+
 namespace Cirlig_Bianca_Lab2.Models
 {
     public class BookCategoriesPageModel : PageModel
     {
-        public List<AssignedCategoryData> AssignedCategoryDataList;
+        public List<AssignedCategoryData>? AssignedCategoryDataList;
         public void PopulateAssignedCategoryData(Cirlig_Bianca_Lab2Context context, Book book)
         {
             var allCategories = context.Category;
-            var bookCategories = new HashSet<int>(book.BookCategories.Select(c => c.CategoryID)); 
+            var bookCategories = new HashSet<int>(
+            book.BookCategories.Select(c => c.CategoryID)); //
             AssignedCategoryDataList = new List<AssignedCategoryData>();
+            
             foreach (var cat in allCategories)
             {
                 AssignedCategoryDataList.Add(new AssignedCategoryData
@@ -20,8 +23,7 @@ namespace Cirlig_Bianca_Lab2.Models
                 });
             }
         }
-        public void UpdateBookCategories(Cirlig_Bianca_Lab2Context context,
-        string[] selectedCategories, Book bookToUpdate)
+        public void UpdateBookCategories(Cirlig_Bianca_Lab2Context context, string[] selectedCategories, Book bookToUpdate)
         {
             if (selectedCategories == null)
             {
@@ -30,7 +32,8 @@ namespace Cirlig_Bianca_Lab2.Models
             }
             var selectedCategoriesHS = new HashSet<string>(selectedCategories);
             var bookCategories = new HashSet<int>
-            (bookToUpdate.BookCategories.Select(c => c.Category.ID));
+                (bookToUpdate.BookCategories.Select(c => c.Category.ID));
+           
             foreach (var cat in context.Category)
             {
                 if (selectedCategoriesHS.Contains(cat.ID.ToString()))

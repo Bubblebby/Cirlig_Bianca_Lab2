@@ -37,6 +37,13 @@ namespace Cirlig_Bianca_Lab2.Pages.Books
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.ID == id);
 
+            if (Book == null)
+            {
+                return NotFound();
+            }
+
+            PopulateAssignedCategoryData(_context, Book);
+
             var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
@@ -44,7 +51,7 @@ namespace Cirlig_Bianca_Lab2.Pages.Books
             }
             Book = book;
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
-            PopulateAssignedCategoryData(_context, Book);
+            
             ViewData["AuthorID"] = new SelectList(_context.Set<Author>().Select(a => new
             {
                 a.ID,
@@ -55,8 +62,7 @@ namespace Cirlig_Bianca_Lab2.Pages.Books
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? id, string[]
-selectedCategories)
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCategories)
         {
             if (id == null)
             {
@@ -66,12 +72,13 @@ selectedCategories)
             var bookToUpdate = await _context.Book
             .Include(i => i.Publisher)
             .Include(i => i.BookCategories)
-            .ThenInclude(i => i.Category)
+                .ThenInclude(i => i.Category)
             .FirstOrDefaultAsync(s => s.ID == id);
             if (bookToUpdate == null)
             {
                 return NotFound();
             }
+
             //se va modifica AuthorID conform cu sarcina de la lab 2
             if (await TryUpdateModelAsync<Book>(
             bookToUpdate,
