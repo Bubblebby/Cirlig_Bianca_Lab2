@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Cirlig_Bianca_Lab2.Data;
 using Cirlig_Bianca_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Cirlig_Bianca_Lab2.Pages.Books
 {
+    [Authorize(Roles = "Admin")]
+
     public class CreateModel :BookCategoriesPageModel
     {
         private readonly Cirlig_Bianca_Lab2.Data.Cirlig_Bianca_Lab2Context _context;

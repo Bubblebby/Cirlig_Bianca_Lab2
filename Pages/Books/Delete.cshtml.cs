@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cirlig_Bianca_Lab2.Data;
 using Cirlig_Bianca_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cirlig_Bianca_Lab2.Pages.Books
 {
+    [Authorize(Roles = "Admin")]
+
     public class DeleteModel : PageModel
     {
         private readonly Cirlig_Bianca_Lab2.Data.Cirlig_Bianca_Lab2Context _context;

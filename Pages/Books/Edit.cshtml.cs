@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cirlig_Bianca_Lab2.Data;
 using Cirlig_Bianca_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cirlig_Bianca_Lab2.Pages.Books
 {
+    [Authorize(Roles = "Admin")]
+
     public class EditModel : BookCategoriesPageModel
 
     {
